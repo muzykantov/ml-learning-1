@@ -1,4 +1,5 @@
 import numpy
+import scipy.special
 from PIL import Image
 
 
@@ -34,6 +35,8 @@ class NeuralNetwork:
             (self.output_nodes, self.hidden_nodes),
         )
 
+        self._actiivation_function = lambda x: scipy.special.expit(x)
+
     @property
     def input_nodes(self) -> int:
         return self._input_nodes
@@ -50,16 +53,39 @@ class NeuralNetwork:
     def learning_rate(self) -> int:
         return self._learning_rate
 
+    @property
+    def weights_input_hidden(self) -> int:
+        return self._weights_input_hidden
+
+    @property
+    def weights_hidden_output(self) -> int:
+        return self._weights_hidden_output
+
+    def predict(self, inputs_list):
+        input_vector = numpy.array(inputs_list).T
+
+        hidden_inputs = numpy.dot(self._weights_input_hidden, input_vector)
+        hidden_outputs = self._actiivation_function(hidden_inputs)
+
+        final_inputs = numpy.dot(self._weights_hidden_output, hidden_outputs)
+        final_outputs = self._actiivation_function(final_inputs)
+
+        return final_outputs
+
 
 def recognize_digits(image: Image.Image):
     nn = NeuralNetwork(
         input_nodes=3,
-        hidden_nodes=3,
+        hidden_nodes=2,
         output_nodes=3,
         learning_rate=0.3,
     )
 
     print(nn)
+    print(nn.weights_input_hidden)
+    print(nn.weights_hidden_output)
+
+    out = nn.predict([10, 20, 30])
 
     # Здесь будет код ML для распознавания цифр
-    return 42
+    return str(out)

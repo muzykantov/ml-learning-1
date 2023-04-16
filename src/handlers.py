@@ -16,7 +16,7 @@ async def start(
     user = update.effective_user
     await update.message.reply_text(
         text=(f"Привет, {user.first_name}! Отправь мне фотографию, и я "
-              "попробую распознать цифры на ней.")
+              "попробую распознать цифру на ней.")
     )
 
 
@@ -34,7 +34,7 @@ async def photo(
     digits = recognize.recognize_digits(image)
 
     if digits is not None:
-        await update.message.reply_text(f"Распознанные цифры: {digits}")
+        await update.message.reply_text(f"Распознанная цифра: {digits}")
     else:
-        await update.message.reply_text("Не удалось распознать цифры на "
+        await update.message.reply_text("Не удалось распознать цифру на "
                                         "фотографии.")
