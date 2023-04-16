@@ -4,7 +4,7 @@ from PIL import Image
 from telegram import Update
 from telegram.ext import ContextTypes
 
-import ml
+import ml.recognize as recognize
 
 
 async def start(
@@ -31,7 +31,7 @@ async def photo(
     photo_data = BytesIO(await photo.download_as_bytearray())
 
     image = Image.open(photo_data)
-    digits = ml.recognize_digits(image)
+    digits = recognize.recognize_digits(image)
 
     if digits is not None:
         await update.message.reply_text(f"Распознанные цифры: {digits}")
